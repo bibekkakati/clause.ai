@@ -2,12 +2,18 @@
 
 Multi-agent AI platform that analyzes rental/lease agreements — extracts key terms, flags risky clauses, and lets you chat with your contract.
 
+![Home Page](./previews/home.png)
+
+<br>
+
 ## What It Does
 
 - **Extraction** — pulls parties, dates, rent, deposits, and clauses from PDF/DOCX leases
 - **Plain-English Summary** — turns legal jargon into simple bullet points
 - **Risk Detection** — flags unfair/risky clauses with severity (LOW–CRITICAL) and exact quotes
 - **Chat with your lease (RAG)** — ask questions like _"Can my landlord enter without notice?"_ and get answers grounded in your document
+
+<br>
 
 ## Tech Stack
 
@@ -23,6 +29,8 @@ Multi-agent AI platform that analyzes rental/lease agreements — extracts key t
 | Storage             | Cloudflare R2                      |
 | Frontend            | React (SPA)                        |
 
+<br>
+
 ## Architecture
 
 Upload → job queued (BullMQ) → background worker runs agent pipeline → results saved to Postgres → user can chat with agreement via RAG.
@@ -37,6 +45,8 @@ Upload → job queued (BullMQ) → background worker runs agent pipeline → res
 | **Summary Agent** | Converts legal jargon into plain-English summary points          | Synthesizes obligations, liabilities, notice periods, and duties into up to 30 bullet points (≤240 chars each). Removes legalese (e.g. "indemnify", "lessor/lessee").                                                                            |
 | **Risk Agent**    | Identifies legal, financial, and practical risks for the tenant  | Flags issues like unilateral cancellation, auto-renewals, unlimited indemnification, hidden fees, unfair deposit forfeiture. Assigns a risk score (0–100) and severity level (LOW/MEDIUM/HIGH/CRITICAL), with exact clause quotes and reasoning. |
 | **Query Agent**   | Powers the interactive RAG chat assistant                        | Answers user questions using only retrieved sections/risks (no hallucination). Uses `fetchSectionsTool` for vector similarity search and `fetchRisksTool` for flagged risks. Maintains multi-turn conversational context.                        |
+
+<br>
 
 ## Workflow
 
@@ -73,3 +83,25 @@ Each stage runs as a discrete, idempotent agent step with intermediate state per
 | 8    | Client Polling      | Client polls the query ID at a set interval until status changes from **Processing** to **Success**/**Failed**                                                                     |
 
 The agent only invokes tools when the question genuinely requires them, keeping simple questions fast and reserving semantic search for clause-level queries. This constrains generation strictly to retrieved evidence, minimizing hallucination and preserving traceability from answer back to source clause. Running the Query Agent asynchronously keeps the API responsive even while the AI is still "thinking."
+
+<br>
+
+### Dashboard View
+
+![Dashboard](./previews/dashboard.png)
+
+<br>
+
+### Agreements View
+
+![Agreements View](./previews/agreements-view.png)
+<br>
+
+### Risks View
+
+![Risks View](./previews/risks-view.png)
+<br>
+
+### Chat View
+
+![Chat View](./previews/chat-view.png)
