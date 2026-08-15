@@ -1,4 +1,4 @@
-# ClauseAI
+# Clause AI
 
 Multi-agent AI platform that analyzes rental/lease agreements — extracts key terms, flags risky clauses, and lets you chat with your contract.
 

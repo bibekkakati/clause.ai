@@ -1,8 +1,8 @@
 {
-    "name": "clause-ai-monorepo",
+    "name": "Clause AI",
     "version": "1.0.0",
     "private": true,
-    "description": "Clause AI Monorepo",
+    "description": "Multi-agent AI platform that analyzes rental/lease agreements",
     "workspaces": [
         "apps/*",
         "packages/*"
