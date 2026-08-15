@@ -17,7 +17,6 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "types": ["vite/client", "node"],
-        "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"],
             "@clause-ai/constants": ["../../packages/constants/src"]
