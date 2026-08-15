@@ -37,6 +37,8 @@ Upload → job queued (BullMQ) → background worker runs agent pipeline → res
 
 **Agent pipeline:** Parser → Summary → Embeddings → Risk
 
+<br>
+
 ## Agents
 
 | Agent             | Responsibility                                                   | Key Tasks                                                                                                                                                                                                                                        |
@@ -60,8 +62,8 @@ Upload → job queued (BullMQ) → background worker runs agent pipeline → res
 | 4    | Embedding Stage | Converts sections into vectors for semantic search                      |
 | 5    | Risk Agent      | Scores and classifies risky clauses                                     |
 | 6    | Health Check    | Pipeline outcome is evaluated                                           |
-| 6a   | ↳ On success    | Status set to **Success** — agreement ready for Q&A                     |
-| 6b   | ↳ On exception  | Status set to **Failed** — error reason recorded                        |
+| 6(a) | ↳ On success    | Status set to **Success** — agreement ready for Q&A                     |
+| 6(b) | ↳ On exception  | Status set to **Failed** — error reason recorded                        |
 
 Each stage runs as a discrete, idempotent agent step with intermediate state persisted to the data layer — supporting observability, retries, and fault isolation across the pipeline.
 
@@ -74,15 +76,17 @@ Each stage runs as a discrete, idempotent agent step with intermediate state per
 | 3    | Async Processing    | Query Agent runs in the background with the agreement's basic details (metadata, parties, payments) in its system prompt, plus the last N chat messages for conversational context |
 | 4    | Self-Assessment     | Agent first checks if it can answer directly from those basic details, without calling any tool                                                                                    |
 | 5    | Tool Selection      | If the question needs clause/section-level detail or risk information, the agent selects the relevant tool(s)                                                                      |
-| 5a   | ↳ Sections Tool     | Generates a query embedding, runs semantic search, and returns the most relevant sections within a max token budget                                                                |
-| 5b   | ↳ Risks Tool        | Returns pre-identified risks directly from storage — no embedding step involved                                                                                                    |
+| 5(a) | ↳ Sections Tool     | Generates a query embedding, runs semantic search, and returns the most relevant sections within a max token budget                                                                |
+| 5(b) | ↳ Risks Tool        | Returns pre-identified risks directly from storage — no embedding step involved                                                                                                    |
 | 6    | Grounded Generation | Agent analyzes whatever information it has (basic details and/or tool results) and generates a response constrained to that evidence                                               |
 | 7    | Result Check        | Outcome of generation is evaluated                                                                                                                                                 |
-| 7a   | ↳ Answer found      | Response saved; polling returns **Success** with the answer                                                                                                                        |
-| 7b   | ↳ No answer         | Polling returns **Failed** with an error reason                                                                                                                                    |
+| 7(a) | ↳ Answer found      | Response saved; polling returns **Success** with the answer                                                                                                                        |
+| 7(b) | ↳ No answer         | Polling returns **Failed** with an error reason                                                                                                                                    |
 | 8    | Client Polling      | Client polls the query ID at a set interval until status changes from **Processing** to **Success**/**Failed**                                                                     |
 
 The agent only invokes tools when the question genuinely requires them, keeping simple questions fast and reserving semantic search for clause-level queries. This constrains generation strictly to retrieved evidence, minimizing hallucination and preserving traceability from answer back to source clause. Running the Query Agent asynchronously keeps the API responsive even while the AI is still "thinking."
+
+<hr>
 
 <br>
 

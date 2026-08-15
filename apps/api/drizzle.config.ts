@@ -15,7 +15,7 @@ export default defineConfig({
         host: DB_HOST,
         port: DB_PORT,
         user: DB_USER,
-        password: decodeURIComponent(DB_PASSWORD),
+        password: DB_PASSWORD,
         database: DB_NAME,
         ssl: {
             rejectUnauthorized: false,
