@@ -136,19 +136,27 @@ npm run dev
 
 ### Dashboard View
 
+An overview of your analyzed agreements, presenting a high-level summary of processed documents. It gives you a quick snapshot of the overall risk profile across your leases.
+
 [![Dashboard](./previews/dashboard.png)](./previews/dashboard.png)
 <br>
 
 ### Agreements View
+
+A detailed view of a specific lease agreement. Here you can see the extracted metadata, parties involved, and a plain-English summary of the key terms.
 
 [![Agreements View](./previews/agreements-view.png)](./previews/agreements-view.png)
 <br>
 
 ### Risks View
 
+Highlights the flagged clauses that pose potential issues. It categorizes risks by severity, providing exact quotes from the contract alongside plain-language explanations.
+
 [![Risks View](./previews/risks-view.png)](./previews/risks-view.png)
 <br>
 
 ### Chat View
+
+An interactive RAG chat interface to ask specific questions about your agreement. The underlying LLM is incredibly flexible — you can even use Hinglish to chat with the model and it responds accurately based on your contract!
 
 [![Chat View](./previews/chat-view.png)](./previews/chat-view.png)
