@@ -136,9 +136,9 @@ export const AgreementDetailModal: React.FC<AgreementDetailModalProps> = ({
         if (res.success && res.data) {
             setDetails(res.data.agreement || null);
             setRisks(res.data.risks || []);
-            if (res.data.chatId) {
-                setChatId(res.data.chatId);
-            }
+            setChatId(res.data.chatId || "");
+        } else {
+            setChatId("");
         }
     };
 
@@ -524,13 +524,15 @@ export const AgreementDetailModal: React.FC<AgreementDetailModalProps> = ({
                         {risks.length})
                     </button>
 
-                    <button
-                        className={`btn btn-sm ${activeTab === "chat" ? "btn-primary" : "btn-ghost"}`}
-                        onClick={() => setActiveTab("chat")}
-                        style={{ fontSize: "0.8rem", padding: "6px 12px" }}
-                    >
-                        <IconMessageSquare size={14} /> Ask Questions
-                    </button>
+                    {chatId && (
+                        <button
+                            className={`btn btn-sm ${activeTab === "chat" ? "btn-primary" : "btn-ghost"}`}
+                            onClick={() => setActiveTab("chat")}
+                            style={{ fontSize: "0.8rem", padding: "6px 12px" }}
+                        >
+                            <IconMessageSquare size={14} /> Ask Questions
+                        </button>
+                    )}
                 </div>
 
                 {/* Modal Scrollable Content Body */}
@@ -571,7 +573,7 @@ export const AgreementDetailModal: React.FC<AgreementDetailModalProps> = ({
                             collapsedRisks={collapsedRisks}
                             toggleRiskCollapse={toggleRiskCollapse}
                         />
-                    ) : (
+                    ) : activeTab === "chat" && chatId ? (
                         <AgreementChatTab
                             chatMessages={chatMessages}
                             loadingChat={loadingChat}
@@ -594,6 +596,14 @@ export const AgreementDetailModal: React.FC<AgreementDetailModalProps> = ({
                                 )
                             }
                             onSendMessage={handleSendQuery}
+                        />
+                    ) : (
+                        <AgreementDetailsTab
+                            metadata={metadata}
+                            parties={parties}
+                            property={property}
+                            payments={payments}
+                            summaryPoints={summaryPoints}
                         />
                     )}
                 </div>

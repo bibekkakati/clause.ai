@@ -9,6 +9,7 @@ import {
     IconScale,
     IconUsers,
 } from "./icons/CustomIcons";
+import { getDepositTypeDisplayLabel } from "@clause-ai/constants";
 
 interface AgreementDetailsTabProps {
     metadata: {
@@ -251,10 +252,7 @@ export const AgreementDetailsTab: React.FC<AgreementDetailsTabProps> = ({
                     }}
                 >
                     {property && (
-                        <div
-                            className="bento-card"
-                            style={{ padding: "16px" }}
-                        >
+                        <div className="bento-card" style={{ padding: "16px" }}>
                             <h4
                                 style={{
                                     fontSize: "0.92rem",
@@ -322,10 +320,7 @@ export const AgreementDetailsTab: React.FC<AgreementDetailsTabProps> = ({
                     )}
 
                     {payments && (
-                        <div
-                            className="bento-card"
-                            style={{ padding: "16px" }}
-                        >
+                        <div className="bento-card" style={{ padding: "16px" }}>
                             <h4
                                 style={{
                                     fontSize: "0.92rem",
@@ -372,12 +367,16 @@ export const AgreementDetailsTab: React.FC<AgreementDetailsTabProps> = ({
                                             color: "var(--text-primary)",
                                         }}
                                     >
-                                        Security Deposit:
+                                        Deposit:
                                     </strong>{" "}
                                     <span>
                                         {payments.currency || "INR"}{" "}
                                         {payments.depositAmount?.toLocaleString()}{" "}
-                                        ({payments.depositType})
+                                        (
+                                        {getDepositTypeDisplayLabel(
+                                            payments.depositType,
+                                        )}
+                                        )
                                     </span>
                                 </div>
                             </div>
