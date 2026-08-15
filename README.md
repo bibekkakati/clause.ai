@@ -2,7 +2,7 @@
 
 Multi-agent AI platform that analyzes rental/lease agreements — extracts key terms, flags risky clauses, and lets you chat with your contract.
 
-![Home Page](./previews/home.png)
+[![Home Page](./previews/home.png)](./previews/home.png)
 
 <br>
 
@@ -50,7 +50,7 @@ Upload → job queued (BullMQ) → background worker runs agent pipeline → res
 
 <br>
 
-## Workflow
+## Workflows
 
 ### 1. Agreement Processing Pipeline
 
@@ -131,26 +131,24 @@ cd apps/web
 npm run dev
 ```
 
-<br>
 <hr>
 <br>
 
 ### Dashboard View
 
-![Dashboard](./previews/dashboard.png)
-
+[![Dashboard](./previews/dashboard.png)](./previews/dashboard.png)
 <br>
 
 ### Agreements View
 
-![Agreements View](./previews/agreements-view.png)
+[![Agreements View](./previews/agreements-view.png)](./previews/agreements-view.png)
 <br>
 
 ### Risks View
 
-![Risks View](./previews/risks-view.png)
+[![Risks View](./previews/risks-view.png)](./previews/risks-view.png)
 <br>
 
 ### Chat View
 
-![Chat View](./previews/chat-view.png)
+[![Chat View](./previews/chat-view.png)](./previews/chat-view.png)
