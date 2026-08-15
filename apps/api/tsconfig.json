@@ -9,14 +9,13 @@
         "sourceMap": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@clause-ai/constants": ["../../packages/constants/src"]
         },
         "composite": true,
         "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
     },
-    "references": [
-        { "path": "../../packages/constants" }
-    ],
+    "references": [{ "path": "../../packages/constants" }],
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]
 }
