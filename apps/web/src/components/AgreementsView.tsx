@@ -1,9 +1,9 @@
+import { AgreementSummaryItem } from "@/services/agreement.service";
 import {
     getAgreementStatusDisplayLabel,
     getAgreementTypeDisplayLabel,
 } from "@clause-ai/constants";
 import React, { useMemo, useState } from "react";
-import { AgreementSummaryItem } from "../services/agreement.service";
 import AgreementDetailModal from "./AgreementDetailModal";
 import {
     IconDocument,

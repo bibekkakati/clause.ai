@@ -1,5 +1,5 @@
 import React from "react";
-import { ChatMessage } from "../services/agreement.service";
+import { ChatMessage } from "@/services/agreement.service";
 import { IconSend, InlineSpinner } from "./icons/CustomIcons";
 
 interface AgreementChatTabProps {

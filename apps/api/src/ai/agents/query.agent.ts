@@ -1,3 +1,4 @@
+import { fetchRisksTool } from "@/ai/tools/risks.tool";
 import { fetchSectionsTool } from "@/ai/tools/sections.tool";
 import { AI_MODELS } from "@/config/ai.config";
 import { ChatMessageRole } from "@/constants";
@@ -5,7 +6,6 @@ import { logger } from "@/utils/logger.util";
 import { Agent } from "@mastra/core/agent";
 import { MessageListItem } from "@mastra/core/agent/message-list";
 import { RequestContext } from "@mastra/core/request-context";
-import { fetchRisksTool } from "../tools/risks.tool";
 
 const Instructions = `
 You are "Clause AI", an friendly and polite assistant that answers questions about a user's legal agreement accurately, concisely, and only from the agreement content available through the provided tools.

@@ -1,5 +1,5 @@
+import { authService } from "@/services";
 import React, { useState } from "react";
-import { authService } from "../services";
 import BrandLogo from "./BrandLogo";
 import {
     IconAlertTriangle,

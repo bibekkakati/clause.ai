@@ -1,6 +1,6 @@
+import { UserProfile } from "@/services/user.service";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { UserProfile } from "../services/user.service";
 import BrandLogo from "./BrandLogo";
 import {
     IconClose,

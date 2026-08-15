@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import { agreementService } from "@/services";
+import {
+    AgreementSummaryItem,
+    ChatMessage,
+} from "@/services/agreement.service";
 import {
     getAgreementStatusDisplayLabel,
     getAgreementTypeDisplayLabel,
 } from "@clause-ai/constants";
-import { agreementService } from "../services";
-import {
-    AgreementSummaryItem,
-    ChatMessage,
-} from "../services/agreement.service";
+import React, { useEffect, useRef, useState } from "react";
 import { AgreementChatTab } from "./AgreementChatTab";
 import { AgreementDetailsTab } from "./AgreementDetailsTab";
 import { AgreementRisksTab } from "./AgreementRisksTab";

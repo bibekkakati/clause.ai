@@ -1,6 +1,6 @@
-import React from "react";
+import { UserFileItem } from "@/services/file.service";
 import { getFileStatusDisplayLabel } from "@clause-ai/constants";
-import { UserFileItem } from "../services/file.service";
+import React from "react";
 import {
     IconFilePdf,
     IconPlus,

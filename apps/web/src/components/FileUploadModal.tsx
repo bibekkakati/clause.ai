@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
+import { fileService } from "@/services";
 import axios from "axios";
-import { fileService } from "../services";
+import React, { useRef, useState } from "react";
 import {
     IconAlertTriangle,
     IconCheck,

@@ -19,7 +19,8 @@
         "types": ["vite/client", "node"],
         "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@clause-ai/constants": ["../../packages/constants/src"]
         },
         "composite": true,
         "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo"
