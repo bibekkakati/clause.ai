@@ -41,7 +41,9 @@ const ResponseSchema = z.object({
                 ),
         )
         .nullable()
-        .describe("Maximum 30 summary points and minimum 3 summary points."),
+        .describe(
+            "Maximum 20 summary points. Minimum 3 summary points. Best is 8-12 points.",
+        ),
     error: z
         .string()
         .nullable()

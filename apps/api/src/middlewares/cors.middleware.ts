@@ -1,11 +1,14 @@
 import { env } from "@/config/env.config";
 import cors, { CorsRequest } from "cors";
 
-const allowlist: Record<string, boolean> = {
-    "https://clauseai.com": true,
-    "https://www.clauseai.com": true,
-};
 const isProduction = env.NODE_ENV === "production";
+
+const allowlist: Record<string, boolean> = {};
+if (env.ALLOW_DOMAINS) {
+    env.ALLOW_DOMAINS.split(",").forEach((domain) => {
+        allowlist[domain.trim()] = true;
+    });
+}
 
 /**
  * CORS options delegate function that dynamically configures CORS settings based on the request origin.

@@ -12,7 +12,7 @@ const PDF_PARSER = new LiteParse({
     ocrLanguage: "eng",
     dpi: 300,
     outputFormat: "text",
-    quiet: env.NODE_ENV === "development",
+    quiet: env.NODE_ENV === "production",
     keepHeadersFooters: false,
     extractFormFields: true,
     preserveVerySmallText: true,

@@ -7,6 +7,7 @@ const envSchema = z.object({
     // Server Config
     NODE_ENV: z.enum(["development", "production", "test"]),
     PORT: z.coerce.number(),
+    ALLOW_DOMAINS: z.string().optional(),
 
     // Database Config
     DB_HOST: z.string().min(1, "DB_HOST is required"),
