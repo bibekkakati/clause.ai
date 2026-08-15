@@ -1,0 +1,29 @@
+{
+    "name": "clause-ai-monorepo",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Clause AI Monorepo",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "concurrently -n \"API,WEB\" -c \"cyan,magenta\" \"npm run dev:api\" \"npm run dev:web\"",
+        "dev:api": "npm run dev --workspace=@clause-ai/api",
+        "dev:web": "npm run dev --workspace=@clause-ai/web",
+        "build": "npm run build --workspaces",
+        "build:api": "npm run build --workspace=@clause-ai/api",
+        "build:web": "npm run build --workspace=@clause-ai/web",
+        "start:api": "npm run start --workspace=@clause-ai/api",
+        "start:web": "npm run preview --workspace=@clause-ai/web",
+        "install:api:prod": "npm ci --workspace=@clause-ai/api --omit=dev --include-workspace-root",
+        "install:web:prod": "npm ci --workspace=@clause-ai/web --omit=dev --include-workspace-root",
+        "install:api": "npm ci --workspace=@clause-ai/api --include-workspace-root",
+        "install:web": "npm ci --workspace=@clause-ai/web --include-workspace-root",
+        "test": "npm run test --workspaces",
+        "test:api": "npm run test --workspace=@clause-ai/api"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    }
+}

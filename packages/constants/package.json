@@ -1,0 +1,21 @@
+{
+    "name": "@clause-ai/constants",
+    "version": "1.0.0",
+    "description": "Shared constants, enum types, and display label formatters for Clause AI",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "default": "./dist/index.js"
+        }
+    },
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+}
