@@ -86,8 +86,53 @@ Each stage runs as a discrete, idempotent agent step with intermediate state per
 
 The agent only invokes tools when the question genuinely requires them, keeping simple questions fast and reserving semantic search for clause-level queries. This constrains generation strictly to retrieved evidence, minimizing hallucination and preserving traceability from answer back to source clause. Running the Query Agent asynchronously keeps the API responsive even while the AI is still "thinking."
 
-<hr>
+<br>
 
+## Local Development
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/bibekkakati/clause.ai.git
+cd clause.ai
+npm install
+```
+
+### 2. Environment Variables
+
+Create a `.env` file in both `apps/api` and `apps/web` using their respective `.env.example` templates.
+
+- **Backend (`apps/api/.env`)**: Requires Postgres, Redis, S3 (Cloudflare R2), and Google Gemini API key.
+- **Frontend (`apps/web/.env`)**: Requires `VITE_API_URL` pointing to the backend.
+
+### 3. Database Setup (Backend)
+
+Navigate to `apps/api` and run migrations:
+
+```bash
+cd apps/api
+npm run generate-schema
+npm run migrate-schema
+```
+
+### 4. Run Locally
+
+**Start Backend**:
+
+```bash
+cd apps/api
+npm run dev
+```
+
+**Start Frontend**:
+
+```bash
+cd apps/web
+npm run dev
+```
+
+<br>
+<hr>
 <br>
 
 ### Dashboard View
