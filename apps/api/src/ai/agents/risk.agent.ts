@@ -1,6 +1,7 @@
-import { AI_MODELS } from "@/config/ai.config";
 import { RiskLevelType } from "@/constants";
+import { getAvailableModels, markModelRateLimited } from "@/utils/ai.util";
 import { logger } from "@/utils/logger.util";
+import { APICallError } from "@ai-sdk/provider";
 import { Agent } from "@mastra/core/agent";
 import { z } from "zod";
 
@@ -120,7 +121,7 @@ const parserAgent: Agent = new Agent({
     id: "risk-agent",
     name: "Risk Agent",
     instructions: Instructions,
-    model: AI_MODELS.map((model) => ({
+    model: getAvailableModels().map((model) => ({
         id: model,
         model: model,
         modelSettings: {
@@ -132,11 +133,11 @@ const parserAgent: Agent = new Agent({
 });
 
 export const runRiskAgent = async (
-    runId: string,
+    agreementId: string,
     key: string,
     content: string,
 ): Promise<RiskAgentOutput> => {
-    logger.info({ runId, key }, "Starting risk agent");
+    logger.info({ agreementId, key }, "Starting risk agent");
 
     try {
         const response = await parserAgent.generate(
@@ -161,7 +162,7 @@ export const runRiskAgent = async (
             totalTokens,
             reasoningTokens,
         };
-        logger.info({ runId, key, tokenUsage }, "Completed risk agent");
+        logger.info({ agreementId, key, tokenUsage }, "Completed risk agent");
 
         const result = response.object as RiskAgentOutput;
 
@@ -189,7 +190,20 @@ export const runRiskAgent = async (
 
         return result;
     } catch (error: any) {
-        logger.error({ runId, error: error.message });
+        handleError(error);
+        logger.error({ agreementId, error: error.message });
         throw new Error("Risk agent process failed. Service error.");
+    }
+};
+
+const handleError = (error: any) => {
+    // Check if model quota exhausted
+    if (APICallError.isInstance(error) && error.statusCode === 429) {
+        const { model, modelId } = (error.requestBodyValues as any) || {};
+        const headers = error.responseHeaders || {};
+        const retryAfter = headers["retry-after"];
+
+        markModelRateLimited(Number(retryAfter), model || modelId);
+        logger.warn({ model }, "Model rate-limited");
     }
 };

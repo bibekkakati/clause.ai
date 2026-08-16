@@ -5,13 +5,13 @@ import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({ apiKey: env.GOOGLE_API_KEY });
 
 export const runEmbeddingAgent = async (
-    runId: string,
+    agreementId: string,
     section: {
         heading: string;
         content: string;
     },
 ): Promise<number[]> => {
-    logger.info({ runId }, "Starting embedding generation");
+    logger.info({ agreementId }, "Starting embedding generation");
 
     const message: string[] = [
         "task: sentence similarity",
@@ -31,16 +31,19 @@ export const runEmbeddingAgent = async (
         });
 
         if (!response || !response.embeddings || !response.embeddings.length) {
-            logger.error({ runId }, "Model failed");
+            logger.error({ agreementId }, "Model failed");
             throw new Error("Model failed");
         }
 
         const tokenCount = response.embeddings[0].statistics?.tokenCount;
-        logger.info({ runId, tokenCount }, "Completed embedding generation");
+        logger.info(
+            { agreementId, tokenCount },
+            "Completed embedding generation",
+        );
 
         return response.embeddings[0].values || [];
     } catch (error: any) {
-        logger.error({ runId, error: error.message });
+        logger.error({ agreementId, error: error.message });
         throw new Error("Embedding generation process failed. Service error.");
     }
 };

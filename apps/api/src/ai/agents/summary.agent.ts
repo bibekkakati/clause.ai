@@ -1,7 +1,8 @@
-import { AI_MODELS } from "@/config/ai.config";
 import { logger } from "@/utils/logger.util";
+import { APICallError } from "@ai-sdk/provider";
 import { Agent } from "@mastra/core/agent";
 import { z } from "zod";
+import { getAvailableModels, markModelRateLimited } from "../../utils/ai.util";
 
 const Instructions = `
     You are an expert legal document summarizer.
@@ -58,7 +59,7 @@ const summaryAgent: Agent = new Agent({
     id: "summary-agent",
     name: "Summary Agent",
     instructions: Instructions,
-    model: AI_MODELS.map((model) => ({
+    model: getAvailableModels().map((model) => ({
         id: model,
         model: model,
         modelSettings: {
@@ -70,10 +71,10 @@ const summaryAgent: Agent = new Agent({
 });
 
 export const runSummaryAgent = async (
-    runId: string,
+    agreementId: string,
     content: string,
 ): Promise<SummaryAgentOutput> => {
-    logger.info({ runId }, "Starting summary agent");
+    logger.info({ agreementId }, "Starting summary agent");
 
     try {
         const response = await summaryAgent.generate(
@@ -98,7 +99,7 @@ export const runSummaryAgent = async (
             totalTokens,
             reasoningTokens,
         };
-        logger.info({ runId, tokenUsage }, "Completed summary agent");
+        logger.info({ agreementId, tokenUsage }, "Completed summary agent");
 
         const result = response.object;
 
@@ -107,7 +108,20 @@ export const runSummaryAgent = async (
 
         return result;
     } catch (error: any) {
-        logger.error({ runId, error: error.message });
+        handleError(error);
+        logger.error({ agreementId, error: error.message });
         throw new Error("Summary agent process failed. Service error.");
+    }
+};
+
+const handleError = (error: any) => {
+    // Check if model quota exhausted
+    if (APICallError.isInstance(error) && error.statusCode === 429) {
+        const { model, modelId } = (error.requestBodyValues as any) || {};
+        const headers = error.responseHeaders || {};
+        const retryAfter = headers["retry-after"];
+
+        markModelRateLimited(Number(retryAfter), model || modelId);
+        logger.warn({ model }, "Model rate-limited");
     }
 };

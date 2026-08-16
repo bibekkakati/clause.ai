@@ -38,6 +38,10 @@ const envSchema = z.object({
 
     // AI Config
     GOOGLE_API_KEY: z.string().min(1, "GOOGLE_API_KEY is required"),
+
+    // Mail Config
+    RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
+    MAIL_FROM: z.string().min(1, "MAIL_FROM is required"),
 });
 
 const _env = envSchema.safeParse(process.env);

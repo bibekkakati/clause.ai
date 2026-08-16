@@ -2,20 +2,19 @@ import { createQueueConnection } from "@/infra/bullmq.client";
 import { getCorrelationId } from "@/utils/context.util";
 import { generateUUIDv7 } from "@/utils/id.util";
 import { logger } from "@/utils/logger.util";
+import { NotificationType } from "@clause-ai/constants";
 import { Queue } from "bullmq";
 
 export interface EmailNotificationPayload {
-    templateId: string;
     email: string;
+    type: NotificationType;
     payload: Record<string, any>;
-    correlationId?: string;
 }
 
 export interface FileProcessingPayload {
     agreementId: string;
     fileId: string;
     userId: string;
-    correlationId?: string;
 }
 
 // Queue name
@@ -44,8 +43,7 @@ const messageQueue = new Queue(MESSAGE_QUEUE_KEY, {
 export const publishEmailNotificationEvent = async (
     data: EmailNotificationPayload,
 ) => {
-    const correlationId =
-        data.correlationId || getCorrelationId() || generateUUIDv7();
+    const correlationId = getCorrelationId() || generateUUIDv7();
     const payloadWithTrace = { ...data, correlationId };
 
     await messageQueue.add(EMAIL_NOTIFICATION_JOB, payloadWithTrace);
@@ -61,8 +59,7 @@ export const publishEmailNotificationEvent = async (
 export const publishAgreementProcessEvent = async (
     data: FileProcessingPayload,
 ) => {
-    const correlationId =
-        data.correlationId || getCorrelationId() || generateUUIDv7();
+    const correlationId = getCorrelationId() || generateUUIDv7();
     const payloadWithTrace = { ...data, correlationId };
 
     await messageQueue.add(PROCESS_FILE_JOB, payloadWithTrace);

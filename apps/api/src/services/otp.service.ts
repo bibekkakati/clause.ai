@@ -76,9 +76,9 @@ export const sendEmailOTP = async (
 
     // Trigger email through event
     await publishEmailNotificationEvent({
-        templateId: "", // TODO: map template id
         email,
-        payload: { otp },
+        type: "OTP",
+        payload: { otp, expiryMins: OTP_EXPIRY_MINUTES },
     });
 
     return { success: true, expiryInMins: OTP_EXPIRY_MINUTES };

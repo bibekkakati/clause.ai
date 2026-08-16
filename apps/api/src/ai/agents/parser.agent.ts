@@ -1,11 +1,12 @@
-import { AI_MODELS } from "@/config/ai.config";
 import {
     AGREEMENT_DEPOSIT_TYPES,
     AGREEMENT_PARTY_ROLES,
     AGREEMENT_TYPES,
     SECTION_CLAUSE_TYPES,
 } from "@/constants";
+import { getAvailableModels, markModelRateLimited } from "@/utils/ai.util";
 import { logger } from "@/utils/logger.util";
+import { APICallError } from "@ai-sdk/provider";
 import { Agent } from "@mastra/core/agent";
 import { z } from "zod";
 
@@ -210,7 +211,7 @@ const parserAgent: Agent = new Agent({
     id: "parser-agent",
     name: "Parser Agent",
     instructions: Instructions,
-    model: AI_MODELS.map((model) => ({
+    model: getAvailableModels().map((model) => ({
         id: model,
         model: model,
         modelSettings: {
@@ -222,7 +223,7 @@ const parserAgent: Agent = new Agent({
 });
 
 export const runParserAgent = async (
-    runId: string,
+    agreementId: string,
     {
         parsedText,
         fileUrl,
@@ -233,7 +234,7 @@ export const runParserAgent = async (
         mimeType: string;
     },
 ): Promise<ParserAgentOutput> => {
-    logger.info({ runId, mimeType }, "Starting parser agent");
+    logger.info({ agreementId, mimeType }, "Starting parser agent");
 
     try {
         const response = await parserAgent.generate(
@@ -269,7 +270,7 @@ export const runParserAgent = async (
             totalTokens,
             reasoningTokens,
         };
-        logger.info({ runId, tokenUsage }, "Completed parser agent");
+        logger.info({ agreementId, tokenUsage }, "Completed parser agent");
 
         const result = response.object;
 
@@ -277,7 +278,20 @@ export const runParserAgent = async (
 
         return result;
     } catch (error: any) {
-        logger.error({ runId, error: error.message });
+        handleError(error);
+        logger.error({ agreementId, error: error.message });
         throw new Error("Parser agent failed. Service error.");
+    }
+};
+
+const handleError = (error: any) => {
+    // Check if model quota exhausted
+    if (APICallError.isInstance(error) && error.statusCode === 429) {
+        const { model, modelId } = (error.requestBodyValues as any) || {};
+        const headers = error.responseHeaders || {};
+        const retryAfter = headers["retry-after"];
+
+        markModelRateLimited(Number(retryAfter), model || modelId);
+        logger.warn({ model }, "Model rate-limited");
     }
 };

@@ -26,6 +26,7 @@ export const initMessageWorker = (): Worker => {
     messageWorker = new Worker(
         MESSAGE_QUEUE_KEY,
         async (job: Job) => {
+            // Correlation ID is provided by the producer, if missing we generate it here
             const correlationId = job.data.correlationId || generateUUIDv7();
             const userId = job.data.userId;
 
@@ -36,14 +37,11 @@ export const initMessageWorker = (): Worker => {
                 );
 
                 if (job.name === EMAIL_NOTIFICATION_JOB) {
-                    const {
-                        templateId,
-                        email,
-                        payload,
-                    }: EmailNotificationPayload = job.data;
+                    const { email, type, payload }: EmailNotificationPayload =
+                        job.data;
                     await NotificationService.sendEmailNotification(
-                        templateId,
                         email,
+                        type,
                         payload,
                     );
                 } else if (job.name === PROCESS_FILE_JOB) {

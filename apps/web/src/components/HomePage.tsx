@@ -22,6 +22,62 @@ interface HomePageProps {
     isAuthenticated: boolean;
 }
 
+const RISKS = [
+    {
+        title: "Unlimited Tenant Liability",
+        badge: { text: "Critical Risk", colorClass: "badge-error" },
+        quote: `"Tenant shall indemnify Landlord against any and all claims, damages, or losses without limitation."`,
+        why: "This clause exposes you to unlimited financial responsibility for building damages even when not directly caused by your actions."
+    },
+    {
+        title: "120 Days Auto-Renewal Notice Window",
+        badge: { text: "Medium Risk", colorClass: "badge-warning" },
+        quote: `"Agreement automatically renews for 3 years unless 120 days written cancellation notice is delivered."`,
+        why: "Missing the 120 days cutoff locks you into another 3-year term. Standard commercial notice is typically 30 to 60 days."
+    }
+];
+
+const SUPPORTED_CONTRACTS = [
+    {
+        title: "Commercial Leases",
+        desc: "Office spaces, retail shops, co-working spaces, industrial facilities, and warehouses.",
+        icon: <IconBuilding size={24} />
+    },
+    {
+        title: "Residential Agreements",
+        desc: "Apartment leases, house rent agreements, student accommodation, and condo rentals.",
+        icon: <IconFilePdf size={24} />
+    },
+    {
+        title: "Subleases & Co-Tenancy",
+        desc: "Roommate agreements, sublet contracts, shared living terms, and joint tenancies.",
+        icon: <IconUsers size={24} />
+    },
+    {
+        title: "Property Management",
+        desc: "Brokerage agreements, maintenance service contracts, and agency representations.",
+        icon: <IconScale size={24} />
+    }
+];
+
+const PROCESS_STEPS = [
+    {
+        step: "STEP 01",
+        title: "Upload Your PDF Agreement",
+        desc: "Simply drag and drop your PDF lease into the secure workspace."
+    },
+    {
+        step: "STEP 02",
+        title: "Automated Clause Audit",
+        desc: "Clause AI scans all terms, extracts key financial figures, and flags potential risks."
+    },
+    {
+        step: "STEP 03",
+        title: "Review & Ask Questions",
+        desc: "Read your executive summary, review risk cards, or ask questions directly about your agreement."
+    }
+];
+
 export const HomePage: React.FC<HomePageProps> = ({
     onOpenAuth,
     isAuthenticated,
@@ -353,7 +409,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                                         marginLeft: "8px",
                                     }}
                                 >
-                                    commercial_office_lease.pdf
+                                    property_lease.pdf
                                 </span>
                             </div>
 
@@ -390,156 +446,62 @@ export const HomePage: React.FC<HomePageProps> = ({
                                         gap: "16px",
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                            paddingBottom: "12px",
-                                            borderBottom:
-                                                "1px solid var(--border-subtle)",
-                                            fontSize: "0.85rem",
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                fontWeight: 600,
-                                                color: "#0F172A",
-                                            }}
-                                        >
-                                            3 Potential Risks Detected
-                                        </span>
-                                        <span className="badge badge-error">
-                                            1 Critical &bull; 1 High &bull; 1
-                                            Medium
-                                        </span>
-                                    </div>
-
-                                    {/* Risk 1 */}
-                                    <div
-                                        style={{
-                                            background: "#FFFFFF",
-                                            border: "1px solid var(--border-subtle)",
-                                            borderRadius: "var(--radius-sm)",
-                                            padding: "16px 20px",
-                                            boxShadow:
-                                                "0 1px 3px rgba(15, 23, 42, 0.03)",
-                                        }}
-                                    >
+                                    {RISKS.map((risk, idx) => (
                                         <div
+                                            key={idx}
                                             style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
+                                                background: "#FFFFFF",
+                                                border: "1px solid var(--border-subtle)",
+                                                borderRadius: "var(--radius-sm)",
+                                                padding: "16px 20px",
+                                                boxShadow: "0 1px 3px rgba(15, 23, 42, 0.03)",
                                             }}
                                         >
-                                            <span
+                                            <div
                                                 style={{
-                                                    fontWeight: 700,
-                                                    fontSize: "0.9rem",
-                                                    color: "#0F172A",
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "start",
+                                                    marginBottom: "8px",
                                                 }}
                                             >
-                                                Clause 14.2 &bull; Unlimited
-                                                Tenant Liability
-                                            </span>
-                                            <span className="badge badge-error">
-                                                Critical Risk
-                                            </span>
-                                        </div>
-                                        <p
-                                            style={{
-                                                fontFamily: "var(--font-mono)",
-                                                fontSize: "0.8rem",
-                                                color: "#475569",
-                                                marginBottom: "8px",
-                                                background: "#F8FAFC",
-                                                padding: "8px 12px",
-                                                borderRadius: "6px",
-                                                border: "1px solid #E2E8F0",
-                                            }}
-                                        >
-                                            "Tenant shall indemnify Landlord
-                                            against any and all claims, damages,
-                                            or losses without limitation."
-                                        </p>
-                                        <div
-                                            style={{
-                                                fontSize: "0.825rem",
-                                                color: "#334155",
-                                            }}
-                                        >
-                                            <strong>Why this matters:</strong>{" "}
-                                            This clause exposes you to unlimited
-                                            financial responsibility for
-                                            building damages even when not
-                                            directly caused by your actions.
-                                        </div>
-                                    </div>
-
-                                    {/* Risk 2 */}
-                                    <div
-                                        style={{
-                                            background: "#FFFFFF",
-                                            border: "1px solid var(--border-subtle)",
-                                            borderRadius: "var(--radius-sm)",
-                                            padding: "16px 20px",
-                                            boxShadow:
-                                                "0 1px 3px rgba(15, 23, 42, 0.03)",
-                                        }}
-                                    >
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center",
-                                                marginBottom: "8px",
-                                            }}
-                                        >
-                                            <span
+                                                <span
+                                                    style={{
+                                                        fontWeight: 700,
+                                                        fontSize: "0.9rem",
+                                                        color: "#0F172A",
+                                                    }}
+                                                >
+                                                    {risk.title}
+                                                </span>
+                                                <span className={`badge ${risk.badge.colorClass}`}>
+                                                    {risk.badge.text}
+                                                </span>
+                                            </div>
+                                            <p
                                                 style={{
-                                                    fontWeight: 700,
-                                                    fontSize: "0.9rem",
-                                                    color: "#0F172A",
+                                                    fontFamily: "var(--font-mono)",
+                                                    fontSize: "0.8rem",
+                                                    color: "#475569",
+                                                    marginBottom: "8px",
+                                                    background: "#F8FAFC",
+                                                    padding: "8px 12px",
+                                                    borderRadius: "6px",
+                                                    border: "1px solid #E2E8F0",
                                                 }}
                                             >
-                                                Clause 8.1 &bull; 120-Day
-                                                Auto-Renewal Notice Window
-                                            </span>
-                                            <span className="badge badge-warning">
-                                                Medium Risk
-                                            </span>
+                                                {risk.quote}
+                                            </p>
+                                            <div
+                                                style={{
+                                                    fontSize: "0.825rem",
+                                                    color: "#334155",
+                                                }}
+                                            >
+                                                <strong>Why this matters:</strong> {risk.why}
+                                            </div>
                                         </div>
-                                        <p
-                                            style={{
-                                                fontFamily: "var(--font-mono)",
-                                                fontSize: "0.8rem",
-                                                color: "#475569",
-                                                marginBottom: "8px",
-                                                background: "#F8FAFC",
-                                                padding: "8px 12px",
-                                                borderRadius: "6px",
-                                                border: "1px solid #E2E8F0",
-                                            }}
-                                        >
-                                            "Agreement automatically renews for
-                                            3 years unless 120-day written
-                                            cancellation notice is delivered."
-                                        </p>
-                                        <div
-                                            style={{
-                                                fontSize: "0.825rem",
-                                                color: "#334155",
-                                            }}
-                                        >
-                                            <strong>Why this matters:</strong>{" "}
-                                            Missing the 120-day cutoff locks you
-                                            into another 3-year term. Standard
-                                            commercial notice is typically 30 to
-                                            60 days.
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
                             )}
 
@@ -881,153 +843,43 @@ export const HomePage: React.FC<HomePageProps> = ({
                             gap: "20px",
                         }}
                     >
-                        <div className="bento-card" style={{ padding: "24px" }}>
-                            <div
-                                style={{
-                                    width: "48px",
-                                    height: "48px",
-                                    borderRadius: "12px",
-                                    color: "#fff",
-                                    background: "#000",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "16px",
-                                }}
-                            >
-                                <IconBuilding size={24} />
+                        {SUPPORTED_CONTRACTS.map((contract, idx) => (
+                            <div key={idx} className="bento-card" style={{ padding: "24px" }}>
+                                <div
+                                    style={{
+                                        width: "48px",
+                                        height: "48px",
+                                        borderRadius: "12px",
+                                        color: "#fff",
+                                        background: "#000",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        marginBottom: "16px",
+                                    }}
+                                >
+                                    {contract.icon}
+                                </div>
+                                <h4
+                                    style={{
+                                        fontSize: "1.1rem",
+                                        fontWeight: 700,
+                                        marginBottom: "8px",
+                                    }}
+                                >
+                                    {contract.title}
+                                </h4>
+                                <p
+                                    style={{
+                                        fontSize: "0.85rem",
+                                        color: "#475569",
+                                        lineHeight: 1.55,
+                                    }}
+                                >
+                                    {contract.desc}
+                                </p>
                             </div>
-                            <h4
-                                style={{
-                                    fontSize: "1.1rem",
-                                    fontWeight: 700,
-                                    marginBottom: "8px",
-                                }}
-                            >
-                                Commercial Leases
-                            </h4>
-                            <p
-                                style={{
-                                    fontSize: "0.85rem",
-                                    color: "#475569",
-                                    lineHeight: 1.55,
-                                }}
-                            >
-                                Office spaces, retail shops, co-working spaces,
-                                industrial facilities, and warehouses.
-                            </p>
-                        </div>
-
-                        <div className="bento-card" style={{ padding: "24px" }}>
-                            <div
-                                style={{
-                                    width: "48px",
-                                    height: "48px",
-                                    borderRadius: "12px",
-                                    color: "#fff",
-                                    background: "#000",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "16px",
-                                }}
-                            >
-                                <IconFilePdf size={24} />
-                            </div>
-                            <h4
-                                style={{
-                                    fontSize: "1.1rem",
-                                    fontWeight: 700,
-                                    marginBottom: "8px",
-                                }}
-                            >
-                                Residential Agreements
-                            </h4>
-                            <p
-                                style={{
-                                    fontSize: "0.85rem",
-                                    color: "#475569",
-                                    lineHeight: 1.55,
-                                }}
-                            >
-                                Apartment leases, house rent agreements, student
-                                accommodation, and condo rentals.
-                            </p>
-                        </div>
-
-                        <div className="bento-card" style={{ padding: "24px" }}>
-                            <div
-                                style={{
-                                    width: "48px",
-                                    height: "48px",
-                                    borderRadius: "12px",
-                                    color: "#fff",
-                                    background: "#000",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "16px",
-                                }}
-                            >
-                                <IconUsers size={24} />
-                            </div>
-                            <h4
-                                style={{
-                                    fontSize: "1.1rem",
-                                    fontWeight: 700,
-                                    marginBottom: "8px",
-                                }}
-                            >
-                                Subleases & Co-Tenancy
-                            </h4>
-                            <p
-                                style={{
-                                    fontSize: "0.85rem",
-                                    color: "#475569",
-                                    lineHeight: 1.55,
-                                }}
-                            >
-                                Roommate agreements, sublet contracts, shared
-                                living terms, and joint tenancies.
-                            </p>
-                        </div>
-
-                        <div className="bento-card" style={{ padding: "24px" }}>
-                            <div
-                                style={{
-                                    width: "48px",
-                                    height: "48px",
-                                    borderRadius: "12px",
-                                    color: "#fff",
-                                    background: "#000",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "16px",
-                                }}
-                            >
-                                <IconScale size={24} />
-                            </div>
-                            <h4
-                                style={{
-                                    fontSize: "1.1rem",
-                                    fontWeight: 700,
-                                    marginBottom: "8px",
-                                }}
-                            >
-                                Property Management
-                            </h4>
-                            <p
-                                style={{
-                                    fontSize: "0.85rem",
-                                    color: "#475569",
-                                    lineHeight: 1.55,
-                                }}
-                            >
-                                Brokerage agreements, maintenance service
-                                contracts, and agency representations.
-                            </p>
-                        </div>
+                        ))}
                     </div>
                 </section>
 
@@ -1084,127 +936,47 @@ export const HomePage: React.FC<HomePageProps> = ({
                                 gap: "24px",
                             }}
                         >
-                            <div
-                                className="bento-card"
-                                style={{ padding: "26px" }}
-                            >
+                            {PROCESS_STEPS.map((item, idx) => (
                                 <div
-                                    style={{
-                                        fontSize: "0.82rem",
-                                        fontFamily: "var(--font-mono)",
-                                        color: "#fff",
-                                        background: "#000",
-                                        display: "inline-block",
-                                        padding: "3px 8px",
-                                        borderRadius: "6px",
-                                        fontWeight: 800,
-                                        marginBottom: "12px",
-                                    }}
+                                    key={idx}
+                                    className="bento-card"
+                                    style={{ padding: "26px" }}
                                 >
-                                    STEP 01
+                                    <div
+                                        style={{
+                                            fontSize: "0.82rem",
+                                            fontFamily: "var(--font-mono)",
+                                            color: "#fff",
+                                            background: "#000",
+                                            display: "inline-block",
+                                            padding: "3px 8px",
+                                            borderRadius: "6px",
+                                            fontWeight: 800,
+                                            marginBottom: "12px",
+                                        }}
+                                    >
+                                        {item.step}
+                                    </div>
+                                    <h4
+                                        style={{
+                                            fontSize: "1.1rem",
+                                            fontWeight: 700,
+                                            marginBottom: "8px",
+                                        }}
+                                    >
+                                        {item.title}
+                                    </h4>
+                                    <p
+                                        style={{
+                                            fontSize: "0.875rem",
+                                            color: "#475569",
+                                            lineHeight: 1.55,
+                                        }}
+                                    >
+                                        {item.desc}
+                                    </p>
                                 </div>
-                                <h4
-                                    style={{
-                                        fontSize: "1.1rem",
-                                        fontWeight: 700,
-                                        marginBottom: "8px",
-                                    }}
-                                >
-                                    Upload Your PDF Agreement
-                                </h4>
-                                <p
-                                    style={{
-                                        fontSize: "0.875rem",
-                                        color: "#475569",
-                                        lineHeight: 1.55,
-                                    }}
-                                >
-                                    Simply drag and drop your PDF lease into the
-                                    secure workspace.
-                                </p>
-                            </div>
-
-                            <div
-                                className="bento-card"
-                                style={{ padding: "26px" }}
-                            >
-                                <div
-                                    style={{
-                                        fontSize: "0.82rem",
-                                        fontFamily: "var(--font-mono)",
-                                        color: "#fff",
-                                        background: "#000",
-                                        display: "inline-block",
-                                        padding: "3px 8px",
-                                        borderRadius: "6px",
-                                        fontWeight: 800,
-                                        marginBottom: "12px",
-                                    }}
-                                >
-                                    STEP 02
-                                </div>
-                                <h4
-                                    style={{
-                                        fontSize: "1.1rem",
-                                        fontWeight: 700,
-                                        marginBottom: "8px",
-                                    }}
-                                >
-                                    Automated Clause Audit
-                                </h4>
-                                <p
-                                    style={{
-                                        fontSize: "0.875rem",
-                                        color: "#475569",
-                                        lineHeight: 1.55,
-                                    }}
-                                >
-                                    Clause AI scans all terms, extracts key
-                                    financial figures, and flags potential
-                                    risks.
-                                </p>
-                            </div>
-
-                            <div
-                                className="bento-card"
-                                style={{ padding: "26px" }}
-                            >
-                                <div
-                                    style={{
-                                        fontSize: "0.82rem",
-                                        fontFamily: "var(--font-mono)",
-                                        color: "#fff",
-                                        background: "#000",
-                                        display: "inline-block",
-                                        padding: "3px 8px",
-                                        borderRadius: "6px",
-                                        fontWeight: 800,
-                                        marginBottom: "12px",
-                                    }}
-                                >
-                                    STEP 03
-                                </div>
-                                <h4
-                                    style={{
-                                        fontSize: "1.1rem",
-                                        fontWeight: 700,
-                                        marginBottom: "8px",
-                                    }}
-                                >
-                                    Review & Ask Questions
-                                </h4>
-                                <p
-                                    style={{
-                                        fontSize: "0.875rem",
-                                        color: "#475569",
-                                        lineHeight: 1.55,
-                                    }}
-                                >
-                                    Read your executive summary, review risk
-                                    cards, or ask questions directly about your
-                                    agreement.
-                                </p>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </section>

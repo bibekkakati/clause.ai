@@ -1,8 +1,9 @@
 import { fetchRisksTool } from "@/ai/tools/risks.tool";
 import { fetchSectionsTool } from "@/ai/tools/sections.tool";
-import { AI_MODELS } from "@/config/ai.config";
 import { ChatMessageRole } from "@/constants";
+import { getAvailableModels, markModelRateLimited } from "@/utils/ai.util";
 import { logger } from "@/utils/logger.util";
+import { APICallError } from "@ai-sdk/provider";
 import { Agent } from "@mastra/core/agent";
 import { MessageListItem } from "@mastra/core/agent/message-list";
 import { RequestContext } from "@mastra/core/request-context";
@@ -110,7 +111,7 @@ const queryAgent = new Agent({
     name: "Query Agent",
     id: "query-agent",
     instructions: Instructions,
-    model: AI_MODELS.map((model) => ({
+    model: getAvailableModels().map((model) => ({
         id: model,
         model: model,
         modelSettings: {
@@ -141,7 +142,7 @@ export const runQueryAgent = async (
     query: string,
     messages: QueryMessageType[],
 ): Promise<string> => {
-    logger.info({ chatId }, "Asking query agent");
+    logger.info({ chatId, agreementId }, "Asking query agent");
 
     try {
         const reqContext = new RequestContext();
@@ -167,13 +168,29 @@ export const runQueryAgent = async (
             totalTokens,
             reasoningTokens,
         };
-        logger.info({ chatId, tokenUsage }, "Query agent responded");
+        logger.info(
+            { chatId, agreementId, tokenUsage },
+            "Query agent responded",
+        );
 
         const result = response.text;
 
         return result;
     } catch (error: any) {
-        logger.error({ chatId, error: error.message });
+        handleError(error);
+        logger.error({ chatId, agreementId, error: error.message });
         throw new Error("Query agent failed. Service error.");
+    }
+};
+
+const handleError = (error: any) => {
+    // Check if model quota exhausted
+    if (APICallError.isInstance(error) && error.statusCode === 429) {
+        const { model, modelId } = (error.requestBodyValues as any) || {};
+        const headers = error.responseHeaders || {};
+        const retryAfter = headers["retry-after"];
+
+        markModelRateLimited(Number(retryAfter), model || modelId);
+        logger.warn({ model }, "Model rate-limited");
     }
 };

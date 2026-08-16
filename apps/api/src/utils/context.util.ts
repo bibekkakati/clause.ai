@@ -3,8 +3,6 @@ import { AsyncLocalStorage } from "node:async_hooks";
 export interface RequestContext {
     correlationId: string;
     userId?: string;
-    fileId?: string;
-    agreementId?: string;
 }
 
 export const asyncLocalStorage = new AsyncLocalStorage<RequestContext>();
