@@ -73,8 +73,6 @@ const embeddingGenerateStep = createStep({
 
         stepLogger.info(`Generating embedding for section: ${heading}`);
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
         const embedding = await runEmbeddingAgent(agreementId, {
             heading,
             content,

@@ -524,7 +524,7 @@ export const AgreementDetailModal: React.FC<AgreementDetailModalProps> = ({
                         {risks.length})
                     </button>
 
-                    {chatId && (
+                    {chatId && !isProcessingOrFailed ? (
                         <button
                             className={`btn btn-sm ${activeTab === "chat" ? "btn-primary" : "btn-ghost"}`}
                             onClick={() => setActiveTab("chat")}
@@ -532,7 +532,7 @@ export const AgreementDetailModal: React.FC<AgreementDetailModalProps> = ({
                         >
                             <IconMessageSquare size={14} /> Ask Questions
                         </button>
-                    )}
+                    ) : null}
                 </div>
 
                 {/* Modal Scrollable Content Body */}

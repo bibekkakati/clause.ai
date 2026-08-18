@@ -79,9 +79,6 @@ const riskAnalyzeStep = createStep({
 
         stepLogger.info(`Processing risk analysis #${key}`);
 
-        // Hardcoded sleep to stay within free-tier rate limits.
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-
         const result: RiskAgentOutput = await runRiskAgent(
             agreementId,
             key,
