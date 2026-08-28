@@ -1,5 +1,5 @@
 import { env } from "@/config/env.config";
-import { closeDatabaseConnection } from "@/infra/db.client";
+import { closeDatabaseConnection, db } from "@/infra/db.client";
 import { closeRedisConnection } from "@/infra/redis.client";
 import { authorize } from "@/middlewares/auth.middleware";
 import { correlationMiddleware } from "@/middlewares/correlation.middleware";
@@ -23,6 +23,7 @@ import {
     closeSchedulerWorker,
     initSchedulerWorker,
 } from "@/workers/scheduler.worker";
+import { sql } from "drizzle-orm";
 import express, { NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 
@@ -43,6 +44,25 @@ export const startServer = () => {
 
     app.get("/", (req: Request, res: Response) => {
         return res.status(200).send("Welcome to Clause AI");
+    });
+
+    // Checks only application liveness
+    app.get("/health", async (req: Request, res: Response) => {
+        try {
+            return res.status(200).send("OK");
+        } catch {
+            return res.status(500).send("NOT OK");
+        }
+    });
+
+    // Checks application readiness
+    app.get("/ready", async (req: Request, res: Response) => {
+        try {
+            await db.execute(sql`SELECT 1`);
+            return res.status(200).send("OK");
+        } catch {
+            return res.status(500).send("NOT OK");
+        }
     });
 
     // ================== API Routes ==================
