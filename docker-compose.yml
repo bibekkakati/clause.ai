@@ -1,0 +1,30 @@
+services:
+    # Development Environment
+    api-dev:
+        build:
+            context: .
+            dockerfile: apps/api/Dockerfile
+            target: development # Points to the development stage in Dockerfile
+        container_name: clause-api-dev
+        ports:
+            - "3000:3000"
+        env_file:
+            - apps/api/.env
+        # We use a profile so this only runs when explicitly requested
+        profiles:
+            - dev
+
+    # Production Environment
+    api-prod:
+        build:
+            context: .
+            dockerfile: apps/api/Dockerfile
+            target: production # Points to the production stage in Dockerfile
+        container_name: clause-api-prod
+        ports:
+            - "3000:3000"
+        env_file:
+            - apps/api/.env
+        # We use a profile so this only runs when explicitly requested
+        profiles:
+            - prod
